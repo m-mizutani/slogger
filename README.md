@@ -1,4 +1,4 @@
-# slogger
+# slogger [![test](https://github.com/m-mizutani/slogger/actions/workflows/test.yml/badge.svg)](https://github.com/m-mizutani/slogger/actions/workflows/test.yml) [![gosec](https://github.com/m-mizutani/slogger/actions/workflows/gosec.yml/badge.svg)](https://github.com/m-mizutani/slogger/actions/workflows/gosec.yml) [![package scan](https://github.com/m-mizutani/slogger/actions/workflows/trivy.yml/badge.svg)](https://github.com/m-mizutani/slogger/actions/workflows/trivy.yml) [![Go Reference](https://pkg.go.dev/badge/github.com/m-mizutani/slogger.svg)](https://pkg.go.dev/github.com/m-mizutani/slogger)
 
 The `slogger` package provides a simple builder of [slog](golang.org/x/exp/slog). This package allows you to configure the log format, log level, log output, and log replacers.
 
