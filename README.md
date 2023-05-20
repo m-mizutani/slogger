@@ -64,4 +64,4 @@ This function returns the logger and an error if there is any issue with the pro
 
 ## License
 
-This package is released under an open source license. Feel free to use and modify the code as needed.
+Apache License 2.0
