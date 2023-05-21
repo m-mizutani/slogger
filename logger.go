@@ -9,10 +9,11 @@ import (
 )
 
 type config struct {
-	format string
-	level  string
-	output string
-
+	format    string
+	level     string
+	output    string
+	writer    io.Writer
+	source    bool
 	replacers []func(groups []string, a slog.Attr) slog.Attr
 }
 
@@ -32,10 +33,17 @@ func WithLevel(level string) Option {
 	}
 }
 
-// WithOutput sets the log output. Valid values are "-", "stdout", "stderr" and a file path.
+// WithOutput sets the log output. Valid values are "-", "stdout", "stderr" and a file path. If conflict with WithWriter, WithOutput will be ignored.
 func WithOutput(output string) Option {
 	return func(c *config) {
 		c.output = output
+	}
+}
+
+// WithSource sets whether to add source location to log.
+func WithSource(source bool) Option {
+	return func(c *config) {
+		c.source = source
 	}
 }
 
@@ -43,6 +51,13 @@ func WithOutput(output string) Option {
 func WithReplacer(replacer func(groups []string, a slog.Attr) slog.Attr) Option {
 	return func(c *config) {
 		c.replacers = append(c.replacers, replacer)
+	}
+}
+
+// WithWriter sets the log writer. If conflict with WithOutput, WithOutput will be ignored.
+func WithWriter(w io.Writer) Option {
+	return func(c *config) {
+		c.writer = w
 	}
 }
 
@@ -92,8 +107,13 @@ func NewWithError(options ...Option) (*slog.Logger, error) {
 		w = fd
 	}
 
+	// WithWriter will override WithOutput
+	if cfg.writer != nil {
+		w = cfg.writer
+	}
+
 	opt := &slog.HandlerOptions{
-		AddSource: true,
+		AddSource: cfg.source,
 		Level:     logLevel,
 		ReplaceAttr: func(groups []string, attr slog.Attr) slog.Attr {
 			for _, f := range cfg.replacers {

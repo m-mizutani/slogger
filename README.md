@@ -43,6 +43,8 @@ The following options are available for configuring the logger:
 - `WithFormat(format string)`: Sets the log format. Valid values are `"text"` and `"json"`.
 - `WithLevel(level string)`: Sets the log level. Valid values are `"debug"`, `"info"`, `"warn"`, and `"error"`.
 - `WithOutput(output string)`: Sets the log output. Valid values are `"-"`, `"stdout"`, `"stderr"`, and a file path.
+- `WithWriter(w io.Writer)`: Sets the log writer. It will be prioritized over the `WithOutput` option.
+- `WithSource(enable bool)`: Sets whether to output the source location of the log. Default is disabled.
 - `WithReplacer(replacer func(groups []string, a slog.Attr) slog.Attr)`: Sets the log replacer. This function takes the log attribute groups and the current log attribute, and returns the modified log attribute.
 
 ## Error Handling

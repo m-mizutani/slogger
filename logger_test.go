@@ -1,9 +1,11 @@
 package slogger_test
 
 import (
+	"bytes"
 	"errors"
 	"log"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/m-mizutani/slogger"
@@ -76,6 +78,23 @@ func TestNewWithError(t *testing.T) {
 
 		if logger == nil {
 			t.Fatal("expected logger not to be nil")
+		}
+	})
+
+	t.Run("WithSource", func(t *testing.T) {
+		var buf bytes.Buffer
+		logger, err := slogger.NewWithError(slogger.WithSource(true), slogger.WithWriter(&buf))
+		if err != nil {
+			t.Fatal("expected no error, got:", err)
+		}
+
+		if logger == nil {
+			t.Fatal("expected logger not to be nil")
+		}
+
+		logger.Info("test")
+		if !strings.Contains(buf.String(), "logger_test.go:") {
+			t.Fatal("expected log output includes source location, but not")
 		}
 	})
 }
